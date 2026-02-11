@@ -8,6 +8,10 @@ function App() {
         return JSON.parse(localStorage.getItem("notes")) || [];
     });
 
+    const [activeId, setActiveId] = useState(null);
+
+    const activeNote = notes.find(n => n.id === activeId);
+
     function createNote() {
         const newNote = {
             id: Date.now(),
@@ -16,11 +20,19 @@ function App() {
             updatedAt: Date.now(),
         };
         setNotes([newNote, ...notes]);
+        setActiveId(newNote.id);
         console.log(notes);
+    }
+
+    function updateNote(updatedNote) {
+        setNotes(
+            notes.map(note => note.id === updatedNote.id ? updatedNote : note)
+        );
     }
 
     function deleteNote(id) {
         setNotes(notes.filter(note => note.id !== id));
+        setActiveId(null);
     }
 
   return (
@@ -29,10 +41,12 @@ function App() {
             onCreate={createNote}
         />
         <NotesList
+            activeId={activeId}
+            onSelect={setActiveId}
             notes={notes}
             onDelete={deleteNote}
         />
-        <Editor />
+        <Editor note={activeNote} onChange={updateNote} />
     </div>
   );
 }
