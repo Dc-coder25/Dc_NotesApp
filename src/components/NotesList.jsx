@@ -1,6 +1,6 @@
 import { Trash2, PinOff } from "lucide-react";
 
-export default function NotesList({ notes }){
+export default function NotesList({ notes, onDelete }){
     
     return(
         <section className="bg-base-100 border-r border-base-300 p-4 overflow-y-auto">
@@ -34,6 +34,10 @@ export default function NotesList({ notes }){
 
                                             <button
                                                 className="btn btn-ghost btn-xs p-1"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    onDelete(note.id);
+                                                }}
                                             ><Trash2 className="w-4 h-4"/>
                                             </button>
                                         </div>
