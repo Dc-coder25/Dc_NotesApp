@@ -1,7 +1,7 @@
 import Editor from "./components/Editor";
 import NotesList from "./components/NotesList"
 import Sidebar from "./components/Sidebar"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
     const [notes, setNotes] = useState(() => {
@@ -11,6 +11,10 @@ function App() {
     const [activeId, setActiveId] = useState(null);
 
     const activeNote = notes.find(n => n.id === activeId);
+
+    useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
 
     function createNote() {
         const newNote = {
