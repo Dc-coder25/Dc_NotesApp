@@ -1,6 +1,6 @@
 import { Trash2, PinOff } from "lucide-react";
 
-export default function NotesList(){
+export default function NotesList({ notes }){
     
     return(
         <section className="bg-base-100 border-r border-base-300 p-4 overflow-y-auto">
@@ -14,13 +14,17 @@ export default function NotesList(){
 
                     <h4 className="text-xs uppercase font-semibold opacity-60 mb-2"></h4>
 
+                    {notes.length}
+
                     <div className="space-y-2">
-                            <div 
+                        {notes.map(note => (
+                            <div
+                                key={note.id} 
                                 className="card cursor-pointer h-24 transition bg-base-200"
                             >
                                 <div className="card-body p-4 flex flex-col justify-between">
                                     <div className="flex justify-between items-start gap-10">
-                                        <h3 className="font-semibold truncate">"Sans titre</h3>
+                                        <h3 className="font-semibold truncate">{note.title}</h3>
 
                                         <div className="flex gap-1">
                                             <button 
@@ -35,10 +39,10 @@ export default function NotesList(){
                                         </div>
                                     </div>
 
-                                    <p className="text-sm opacity-60 line-clamp-2 truncate">"Aucun contenu"</p>
+                                    <p className="text-sm opacity-60 line-clamp-2 truncate">{note.content}</p>
                                 </div>
                             </div>
-
+                        ))}
                     </div>
                 </div>
         </section>

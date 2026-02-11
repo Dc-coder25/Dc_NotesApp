@@ -24,7 +24,9 @@ function App() {
         <Sidebar
             onCreate={createNote}
         />
-        <NotesList />
+        <NotesList
+            notes={notes}
+        />
         <Editor />
     </div>
   );
