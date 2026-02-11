@@ -33,7 +33,7 @@ export default function NotesList({ notes, onDelete }){
                                             </button>
 
                                             <button
-                                                className="btn btn-ghost btn-xs p-1"
+                                                className="btn btn-ghost hover:text-error btn-xs p-1"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     onDelete(note.id);
