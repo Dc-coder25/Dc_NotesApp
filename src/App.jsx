@@ -50,7 +50,7 @@ function App() {
             notes={notes}
             onDelete={deleteNote}
         />
-        <Editor note={activeNote} onChange={updateNote} />
+        <Editor note={activeNote} onChange={updateNote} setActiveId={setActiveId} />
     </div>
   );
 }

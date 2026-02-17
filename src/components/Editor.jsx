@@ -1,4 +1,6 @@
-export default function Editor({ note, onChange }){
+import { ChevronLeftIcon } from "lucide-react";
+
+export default function Editor({ note, onChange, setActiveId }){
     if (!note) {
         return(
             <main className="flex items-center justify-center text-gray-400">Sélectionne ou crée une note </main>
@@ -6,6 +8,9 @@ export default function Editor({ note, onChange }){
     }
     return(
         <main className="bg-base-100 p-6">
+            <button onClick={() => setActiveId(null)} className="mb-2 cursor-pointer">
+                <ChevronLeftIcon className="w-6 h-6" />
+            </button>
             <input
                 value={note.title}
                 onChange={(e) => 
