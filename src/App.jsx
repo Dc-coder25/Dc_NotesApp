@@ -19,7 +19,6 @@ function App() {
     function createNote() {
         const newNote = {
             id: Date.now(),
-            title: "Nouvelle note",
             content: "",
             updatedAt: Date.now(),
         };

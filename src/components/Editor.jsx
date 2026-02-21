@@ -8,23 +8,12 @@ export default function Editor({ note, onChange, setActiveId }){
     }
     return(
         <main className="bg-base-100 p-6">
-            <button onClick={() => setActiveId(null)} className="mb-2 cursor-pointer">
+            <button onClick={() => setActiveId(null)} className="mb-4 cursor-pointer">
                 <ChevronLeftIcon className="w-6 h-6" />
             </button>
-            <input
-                value={note.title}
-                onChange={(e) => 
-                    onChange({
-                        ...note,
-                        title : e.target.value,
-                        updatedAt: Date.now(),
-                    })
-                } 
-                placeholder="Titre"
-                className="input input-ghost text-2xl font-bold w-full mb-4" 
-            />
+
             <textarea 
-                className="textarea textarea-ghost w-full h-[calc(100vh-140px)] text-base resize-none"
+                className="textarea textarea-ghost w-full h-[calc(100vh-100px)] text-base resize-none"
                 value={note.content}
                 onChange={(e) =>
                     onChange({

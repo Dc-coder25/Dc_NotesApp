@@ -22,23 +22,24 @@ export default function NotesList({ notes, activeId, onSelect, onDelete }){
                         {notes.map(note => (
                             <div
                                 key={note.id}
-                                className={`card cursor-pointer h-24 transition ${
+                                className={`group card cursor-pointer h-24 transition ${
                                     note.id === activeId ? "bg-primary text-primary-content" : "bg-base-200"
                                 }`} 
                                 onClick={()=> onSelect(note.id)}
                             >
                                 <div className="card-body p-4 flex flex-col justify-between">
                                     <div className="flex justify-between items-start gap-10">
-                                        <h3 className="font-semibold truncate">{note.title}</h3>
+                                        <h3 className="font-semibold truncate">{note.content === "" ? "Nouvelle note" : note.content}</h3>
 
-                                        <div className="flex gap-1">
+                                        <div className="opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 flex gap-1">
                                             <button 
                                                 className="btn btn-ghost btn-xs p-1"
                                             ><PinOff className="w-4 h-4"/>
                                             </button>
 
                                             <button
-                                                className="btn btn-ghost hover:text-error btn-xs p-1"
+                                                className={`p-1 rounded-4xl cursor-pointer hover:scale-110  btn-xs transition-all duration-200  
+                                                    ${ note.id === activeId ? "hover:text-red-500 hover:bg-white" : "hover:text-white hover:bg-red-500"}`}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     onDelete(note.id);
@@ -48,7 +49,6 @@ export default function NotesList({ notes, activeId, onSelect, onDelete }){
                                         </div>
                                     </div>
 
-                                    <p className="text-sm opacity-60 line-clamp-2 truncate">{note.content}</p>
                                 </div>
                             </div>
                         ))}
