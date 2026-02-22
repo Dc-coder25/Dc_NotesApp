@@ -11,7 +11,9 @@ function App() {
     const [search, setSearch] = useState("");
 
     const filteredNotes = notes.filter(note => {
-        const matchSearch = note.content.toLowerCase().includes(search.toLowerCase());
+        const content = note.content || "";
+
+        const matchSearch = content.toLowerCase().includes(search.toLowerCase());
     
         return matchSearch;
     
@@ -19,7 +21,7 @@ function App() {
 
     const [activeId, setActiveId] = useState(null);
 
-    const activeNote = notes.find(n => n.id === activeId);
+    const activeNote = activeId === "new" ? {id: null, content: ""} : notes.find(n => n.id === activeId);
 
     useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes));
@@ -27,20 +29,33 @@ function App() {
 
 
 
-    function createNote() {
+    function createNote(initialContent = "") {
         const newNote = {
             id: Date.now(),
-            content: "",
+            content: initialContent,
             updatedAt: Date.now(),
         };
-        setNotes([newNote, ...notes]);
+        setNotes(prev => [newNote, ...prev]);
         setActiveId(newNote.id);
-        console.log(notes);
+        
+        return newNote;
     }
 
     function updateNote(updatedNote) {
-        setNotes(
-            notes.map(note => note.id === updatedNote.id ? updatedNote : note)
+        if(activeId === "new") {
+            const newNote = {
+                id: Date.now(),
+                content: updateNote.content,
+                updatedAt: Date.now(),
+            };
+
+            setNotes(prev => [newNote, ...prev]);
+            setActiveId(newNote.id);
+            return;
+        }
+
+        setNotes(prev =>
+            prev.map(note => note.id === updatedNote.id ? updatedNote : note)
         );
     }
 
@@ -52,7 +67,7 @@ function App() {
   return (
     <div className="h-screen grid grid-cols-[240px_320px_1fr] bg-base-200">
         <Sidebar
-            onCreate={createNote}
+            onCreate={() => setActiveId("new")}
         />
         <NotesList
             activeId={activeId}
