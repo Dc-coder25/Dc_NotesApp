@@ -1,6 +1,6 @@
 import { Trash2, PinOff } from "lucide-react";
 
-export default function NotesList({ notes, activeId, onSelect, onDelete }){
+export default function NotesList({ notes, activeId, onSelect, onDelete, search, onSearch }){
     
     return(
         <section className="bg-base-100 border-r border-base-300 p-4 overflow-y-auto">
@@ -8,6 +8,8 @@ export default function NotesList({ notes, activeId, onSelect, onDelete }){
                 type="text"
                 placeholder="Rechercher..."
                 className="input input-bordered w-full mb-4"
+                value={search}
+                onChange={(e) => onSearch(e.target.value)}
             />
 
             {notes.length === 0 && (

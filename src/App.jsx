@@ -1,20 +1,31 @@
 import Editor from "./components/Editor";
 import NotesList from "./components/NotesList"
 import Sidebar from "./components/Sidebar"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 function App() {
     const [notes, setNotes] = useState(() => {
         return JSON.parse(localStorage.getItem("notes")) || [];
     });
 
+    const [search, setSearch] = useState("");
+
+    const filteredNotes = notes.filter(note => {
+        const matchSearch = note.content.toLowerCase().includes(search.toLowerCase());
+    
+        return matchSearch;
+    
+  }).sort((a, b) => b.updatedAt - a.updatedAt);
+
     const [activeId, setActiveId] = useState(null);
 
     const activeNote = notes.find(n => n.id === activeId);
 
     useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
+        localStorage.setItem("notes", JSON.stringify(notes));
+    }, [notes]);
+
+
 
     function createNote() {
         const newNote = {
@@ -46,7 +57,9 @@ function App() {
         <NotesList
             activeId={activeId}
             onSelect={setActiveId}
-            notes={notes}
+            notes={filteredNotes}
+            onSearch={setSearch}
+            search={search}
             onDelete={deleteNote}
         />
         <Editor note={activeNote} onChange={updateNote} setActiveId={setActiveId} />
