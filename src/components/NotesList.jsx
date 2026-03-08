@@ -1,4 +1,5 @@
 import { Trash2, PinOff } from "lucide-react";
+import React from "react";
 
 export default function NotesList({ notes, activeId, onSelect, onDelete, search, onSearch }){
     

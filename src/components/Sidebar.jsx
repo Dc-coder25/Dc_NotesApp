@@ -11,10 +11,6 @@ export default function Sidebar ({onCreate}){
              <button className="btn btn-primary w-full mb-4" onClick={onCreate}><Edit className="w-4 h-4"/> Nouvelle note</button>
 
              <ul className="menu menu-sm gap-1 w-full">
-                <li><a><PinIcon className="w-4 h-4"/> Epinglées</a></li>
-                <li><a><Folder className="w-4 h-4"/> Travail</a></li>
-                <li><a><Folder className="w-4 h-4"/> Personnel</a></li>
-                <li><a><Folder className="w-4 h-4"/> Idées</a></li>
                 <li><a className="text-error"><Trash2 className="w-4 h-4"/> Corbeille</a></li>
              </ul>
         </aside>
