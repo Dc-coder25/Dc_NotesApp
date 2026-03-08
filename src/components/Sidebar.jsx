@@ -1,18 +1,37 @@
-import { Notebook, Edit, PinIcon, Folder, Trash2 } from "lucide-react";
+import { Notebook, Edit, Folder, Trash2 } from "lucide-react";
 
-export default function Sidebar ({onCreate}){
-    return(
-        <aside className="bg-base-100 border-r border-base-300 p-4">
-            <div className="flex gap-1">
-                <Notebook className="w-6 h-6"/>
-                <h1 className="text-xl font-bold mb-6">DCNotes</h1>
-            </div>
+export default function Sidebar({ onCreate }) {
+  return (
+    <aside className="bg-base-100 border-r border-base-300 p-6 h-screen flex flex-col">
+      {/* Logo + titre */}
+      <div className="flex items-center gap-2 mb-8">
+        <Notebook className="w-7 h-7 text-primary" />
+        <h1 className="text-2xl font-bold tracking-wide">DCNotes</h1>
+      </div>
 
-             <button className="btn btn-primary w-full mb-4" onClick={onCreate}><Edit className="w-4 h-4"/> Nouvelle note</button>
+      {/* Bouton nouvelle note */}
+      <button
+        className="btn btn-primary w-full mb-6 flex items-center gap-2 hover:scale-105 transition-transform"
+        onClick={onCreate}
+      >
+        <Edit className="w-4 h-4" /> Nouvelle note
+      </button>
 
-             <ul className="menu menu-sm gap-1 w-full">
-                <li><a className="text-error"><Trash2 className="w-4 h-4"/> Corbeille</a></li>
-             </ul>
-        </aside>
-    );
+      <div className="divider"></div>
+
+      {/* Menu */}
+      <ul className="menu menu-sm gap-2 w-full">
+        <li>
+          <a className="flex items-center gap-2 hover:bg-base-200 rounded-lg">
+            <Folder className="w-4 h-4 text-blue-500" /> Dossiers
+          </a>
+        </li>
+        <li>
+          <a className="flex items-center gap-2 text-error hover:bg-base-200 rounded-lg">
+            <Trash2 className="w-4 h-4" /> Corbeille
+          </a>
+        </li>
+      </ul>
+    </aside>
+  );
 }
