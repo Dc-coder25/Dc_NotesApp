@@ -4,9 +4,8 @@ export default function Sidebar({ onCreate }) {
   return (
     <aside className="bg-base-100 border-r border-base-300 p-6 h-screen flex flex-col">
       {/* Logo + titre */}
-      <div className="flex items-center gap-2 mb-8">
-        <Notebook className="w-7 h-7 text-primary" />
-        <h1 className="text-2xl font-bold tracking-wide">DCNotes</h1>
+      <div className="flex items-center gap-2 mb-4">
+        <h1 className="text-2xl font-bold tracking-wide">Logo</h1>
       </div>
 
       {/* Bouton nouvelle note */}

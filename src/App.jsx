@@ -7,6 +7,9 @@ function App() {
     const [notes, setNotes] = useState(() => {
         return JSON.parse(localStorage.getItem("notes")) || [];
     });
+    const [corbeillle, setCorbeille] = useState(() => {
+        return JSON.parse(localStorage.getItem("corbeille")) || [];
+    })
 
     const [search, setSearch] = useState("");
 
@@ -17,7 +20,7 @@ function App() {
     
         return matchSearch;
     
-  }).sort((a, b) => b.updatedAt - a.updatedAt);
+    }).sort((a, b) => b.updatedAt - a.updatedAt);
 
     const [activeId, setActiveId] = useState(null);
 
@@ -25,21 +28,10 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes));
-    }, [notes]);
+        localStorage.setItem("corbeille", JSON.stringify(corbeillle));
+    }, [notes, corbeillle]);
 
 
-
-    function createNote(initialContent = "") {
-        const newNote = {
-            id: Date.now(),
-            content: initialContent,
-            updatedAt: Date.now(),
-        };
-        setNotes(prev => [newNote, ...prev]);
-        setActiveId(newNote.id);
-        
-        return newNote;
-    }
 
     function updateNote(updatedNote) {
         if(activeId === "new") {
@@ -59,6 +51,18 @@ function App() {
         );
     }
 
+    function addToCorbeille (id) {
+        notes.map(note => note.id === id ? 
+            setCorbeille(prev => [{
+                id: note.id,
+                content: note.content,
+                updatedAt: note.updatedAt,
+            }, ...prev]) : '');
+        
+        setNotes(notes.filter(note => note.id !== id));
+        setActiveId(null);    
+    }
+
     function deleteNote(id) {
         setNotes(notes.filter(note => note.id !== id));
         setActiveId(null);
@@ -75,7 +79,7 @@ function App() {
             notes={filteredNotes}
             onSearch={setSearch}
             search={search}
-            onDelete={deleteNote}
+            onDelete={addToCorbeille}
         />
         <Editor note={activeNote} onChange={updateNote} setActiveId={setActiveId} />
     </div>
