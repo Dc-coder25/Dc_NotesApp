@@ -7,8 +7,7 @@ const INITIAL_NOTES = [
     content: "Commence à écrire tes notes ici...",
     folder: "Personnel",
     updatedAt: new Date(),
-  },
-];
+  }];
 
 // ─── helpers localStorage ──────────────────────────────────────────────────
 function load(key, fallback) {
@@ -98,6 +97,16 @@ export function NotesProvider({ children }) {
     setActiveId((prev) => (prev === id ? null : prev));
   }, []);
 
+  const restoreNote = useCallback((id) => {
+    setTrashedIds((prev) => prev.filter((tid) => tid !== id));
+  }, []);
+
+  const emptyTrash = useCallback(() => {
+    setNotes((prev) => prev.filter((n) => !trashedIds.includes(n.id)));
+    setTrashedIds([]);
+    setActiveId((prev) => (trashedIds.includes(prev) ? null : prev));
+  }, [trashedIds]);
+
   return (
     <NotesCtx.Provider
       value={{
@@ -117,6 +126,8 @@ export function NotesProvider({ children }) {
         createNote,
         updateNote,
         trashNote,
+        restoreNote,
+        emptyTrash,
       }}
     >
       {children}
