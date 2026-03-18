@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 const INITIAL_NOTES = [
   {
@@ -8,24 +8,49 @@ const INITIAL_NOTES = [
     folder: "Personnel",
     updatedAt: new Date(),
   },
-  {
-    id: "2",
-    title: "Idées de projet",
-    content: "Liste des fonctionnalités à ajouter",
-    folder: "Travail",
-    updatedAt: new Date(Date.now() - 86400000),
-  },
 ];
+
+// ─── helpers localStorage ──────────────────────────────────────────────────
+function load(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    // Les dates sont sérialisées en string → les reconvertir en Date
+    if (key === "notario_notes") {
+      return parsed.map((n) => ({ ...n, updatedAt: new Date(n.updatedAt) }));
+    }
+    return parsed;
+  } catch {
+    return fallback;
+  }
+}
+
+function save(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    console.warn("localStorage indisponible");
+  }
+}
+// ──────────────────────────────────────────────────────────────────────────
 
 const NotesCtx = createContext(null);
 
 export function NotesProvider({ children }) {
-  const [notes, setNotes]               = useState(INITIAL_NOTES);
-  const [activeId, setActiveId]         = useState("1");
+  const [notes, setNotes]               = useState(() => load("notario_notes", INITIAL_NOTES));
+  const [activeId, setActiveId]         = useState(() => load("notario_activeId", "1"));
   const [search, setSearch]             = useState("");
-  const [sortBy, setSortBy]             = useState("date");
+  const [sortBy, setSortBy]             = useState(() => load("notario_sortBy", "date"));
   const [activeFolder, setActiveFolder] = useState("all");
-  const [trashedIds, setTrashedIds]     = useState([]);
+  const [trashedIds, setTrashedIds]     = useState(() => load("notario_trashedIds", []));
+
+  // ─── Sauvegarde automatique à chaque changement ──────────────────────────
+  useEffect(() => { save("notario_notes", notes); }, [notes]);
+  useEffect(() => { save("notario_activeId", activeId); }, [activeId]);
+  useEffect(() => { save("notario_sortBy", sortBy); }, [sortBy]);
+  useEffect(() => { save("notario_trashedIds", trashedIds); }, [trashedIds]);
+  // ─────────────────────────────────────────────────────────────────────────
 
   const activeNote = notes.find((n) => n.id === activeId);
 
