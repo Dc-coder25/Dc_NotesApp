@@ -18,7 +18,7 @@ export default function NoteItem({ note, isTrashed }) {
           {note.title || "Note sans titre"}
         </p>
         <p className="text-[12px] text-zinc-400 truncate mt-0.5">
-          {note.content.split("\n")[0]}
+          {note.content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 80)}
         </p>
         <p className="text-[11px] text-zinc-400 mt-1">{fmt(note.updatedAt)}</p>
       </div>

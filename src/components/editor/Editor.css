@@ -1,0 +1,77 @@
+/* ─── Rich text editor styles ─────────────────────────────────────────── */
+
+.editor-content:empty:before {
+  content: attr(data-placeholder);
+  color: #a1a1aa;
+  pointer-events: none;
+}
+
+.editor-content h1 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #18181b;
+  margin: 1.2rem 0 0.4rem;
+  line-height: 1.3;
+}
+
+.editor-content h2 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #18181b;
+  margin: 1rem 0 0.3rem;
+  line-height: 1.4;
+}
+
+.editor-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #27272a;
+  margin: 0.8rem 0 0.25rem;
+}
+
+.editor-content p {
+  margin: 0.3rem 0;
+}
+
+.editor-content strong { font-weight: 600; }
+.editor-content em     { font-style: italic; }
+.editor-content u      { text-decoration: underline; }
+.editor-content s      { text-decoration: line-through; color: #a1a1aa; }
+
+.editor-content ul,
+.editor-content ol {
+  padding-left: 1.4rem;
+  margin: 0.4rem 0;
+}
+
+.editor-content ul { list-style-type: disc; }
+.editor-content ol { list-style-type: decimal; }
+
+.editor-content li {
+  margin: 0.2rem 0;
+  line-height: 1.6;
+}
+
+.editor-content blockquote {
+  border-left: 3px solid #d4d4d8;
+  padding: 0.3rem 0 0.3rem 1rem;
+  margin: 0.6rem 0;
+  color: #71717a;
+  font-style: italic;
+}
+
+.editor-content hr {
+  border: none;
+  border-top: 1px solid #f4f4f5;
+  margin: 1rem 0;
+}
+
+.editor-content a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.editor-content [style*="text-align: center"] { text-align: center; }
+.editor-content [style*="text-align: right"]  { text-align: right; }
