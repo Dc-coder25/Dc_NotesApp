@@ -7,7 +7,15 @@ const INITIAL_NOTES = [
     content: "Commence à écrire tes notes ici...",
     folder: "Personnel",
     updatedAt: new Date(),
-  }];
+  },
+  {
+    id: "2",
+    title: "Idées de projet",
+    content: "Liste des fonctionnalités à ajouter",
+    folder: "Travail",
+    updatedAt: new Date(Date.now() - 86400000),
+  },
+];
 
 // ─── helpers localStorage ──────────────────────────────────────────────────
 function load(key, fallback) {
@@ -43,7 +51,7 @@ export function NotesProvider({ children }) {
   const [sortBy, setSortBy]             = useState(() => load("notario_sortBy", "date"));
   const [activeFolder, setActiveFolder] = useState("all");
   const [trashedIds, setTrashedIds]     = useState(() => load("notario_trashedIds", []));
-
+  const [floating, setFloating]         = useState(false);
   // ─── Sauvegarde automatique à chaque changement ──────────────────────────
   useEffect(() => { save("notario_notes", notes); }, [notes]);
   useEffect(() => { save("notario_activeId", activeId); }, [activeId]);
@@ -95,6 +103,13 @@ export function NotesProvider({ children }) {
   const trashNote = useCallback((id) => {
     setTrashedIds((prev) => [...prev, id]);
     setActiveId((prev) => (prev === id ? null : prev));
+    setFloating(false);
+  }, []);
+
+  // Réinitialise le mode flottant quand on ferme une note
+  const closeNote = useCallback(() => {
+    setActiveId(null);
+    setFloating(false);
   }, []);
 
   const restoreNote = useCallback((id) => {
@@ -128,6 +143,9 @@ export function NotesProvider({ children }) {
         trashNote,
         restoreNote,
         emptyTrash,
+        floating,
+        setFloating,
+        closeNote,
       }}
     >
       {children}

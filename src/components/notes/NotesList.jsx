@@ -3,13 +3,17 @@ import { useNotes } from "../../store/notesStore";
 import NoteItem from "./NoteItem";
 
 export default function NotesList() {
-  const { filteredNotes, trashedNotes, activeFolder, emptyTrash } = useNotes();
+  const { filteredNotes, trashedNotes, activeFolder, emptyTrash,
+          activeId, floating } = useNotes();
 
-  const isTrash = activeFolder === "trash";
-  const notes = isTrash ? trashedNotes : filteredNotes;
+  const isTrash  = activeFolder === "trash";
+  const notes    = isTrash ? trashedNotes : filteredNotes;
+  // En mode 2 colonnes (pas de note ouverte ou note flottante) → occupe le reste
+  const expanded = !activeId || floating;
 
   return (
-    <section className="w-60 bg-white rounded-xl border border-zinc-200 flex flex-col shrink-0 overflow-hidden">
+    <section className={`bg-white rounded-xl border border-zinc-200 flex flex-col overflow-hidden transition-all
+      ${expanded ? "flex-1" : "w-60 shrink-0"}`}>
       <div className="flex items-center justify-between px-3.5 py-3 border-b border-zinc-100 shrink-0">
         <span className="text-[10px] font-medium uppercase tracking-widest text-zinc-400">
           {isTrash ? "Corbeille" : "Notes"}
@@ -35,13 +39,19 @@ export default function NotesList() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className={`flex-1 overflow-y-auto ${expanded ? "p-3" : ""}`}>
         {notes.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 gap-2 text-zinc-300">
             <FileText size={28} strokeWidth={1.2} />
             <p className="text-xs text-zinc-400">
               {isTrash ? "Corbeille vide" : "Aucune note"}
             </p>
+          </div>
+        ) : expanded ? (
+          <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}>
+            {notes.map((n) => (
+              <NoteItem key={n.id} note={n} isTrashed={isTrash} grid />
+            ))}
           </div>
         ) : (
           notes.map((n) => (

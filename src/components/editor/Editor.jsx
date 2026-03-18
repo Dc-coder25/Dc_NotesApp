@@ -9,7 +9,7 @@ import {
   ChevronLeft, Bold, Italic, Underline as UnderlineIcon,
   Strikethrough, List, ListTodo, Quote, Minus,
   Undo2, Redo2, Maximize2, Minimize2, Copy, Check,
-  AlignLeft, AlignCenter, AlignRight,
+  AlignLeft, AlignCenter, AlignRight, PictureInPicture2,
 } from "lucide-react";
 import { useNotes } from "../../store/notesStore";
 import { fmtFull } from "../../utils/dateUtils";
@@ -41,7 +41,7 @@ function wordCount(html) {
 }
 
 export default function Editor() {
-  const { activeNote, updateNote, setActiveId } = useNotes();
+  const { activeNote, updateNote, setActiveId, closeNote, setFloating } = useNotes();
   const [fullscreen, setFullscreen] = useState(false);
   const [copied, setCopied]         = useState(false);
 
@@ -103,11 +103,14 @@ export default function Editor() {
       {/* ── Toolbar ── */}
       <div className="flex items-center gap-0.5 px-3 py-2 border-b border-zinc-100 flex-wrap">
         <button
-          onClick={() => setActiveId(null)}
+          onClick={closeNote}
           className="flex items-center gap-1 text-xs text-zinc-500 px-1.5 py-1 rounded hover:bg-zinc-100 hover:text-zinc-900 transition-colors mr-1 shrink-0"
         >
           <ChevronLeft size={14} /> Retour
         </button>
+        <Sep />
+
+        <ToolBtn onClick={() => setFloating(true)} title="Mode flottant"><PictureInPicture2 size={13} /></ToolBtn>
         <Sep />
 
         <ToolBtn onClick={() => editor.chain().focus().undo().run()} title="Annuler (Ctrl+Z)" disabled={!editor?.can().undo()}><Undo2 size={13} /></ToolBtn>
