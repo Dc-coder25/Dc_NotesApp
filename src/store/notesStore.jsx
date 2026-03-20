@@ -7,14 +7,7 @@ const INITIAL_NOTES = [
     content: "Commence à écrire tes notes ici...",
     folder: "Personnel",
     updatedAt: new Date(),
-  },
-  {
-    id: "2",
-    title: "Idées de projet",
-    content: "Liste des fonctionnalités à ajouter",
-    folder: "Travail",
-    updatedAt: new Date(Date.now() - 86400000),
-  },
+  }
 ];
 
 // ─── helpers localStorage ──────────────────────────────────────────────────
