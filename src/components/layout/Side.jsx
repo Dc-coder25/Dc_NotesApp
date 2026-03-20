@@ -4,51 +4,47 @@ import { useNotes } from "../../store/notesStore";
 export default function Side() {
   const { activeFolder, setActiveFolder, folders, trashedNotes } = useNotes();
 
-  const cls = (f) =>
-    `flex items-center gap-2 px-2.5 py-1.5 rounded-md text-sm w-full text-left transition-colors ${
-      activeFolder === f
-        ? "bg-zinc-100 text-zinc-900 font-medium"
-        : "text-zinc-500 hover:bg-zinc-100"
-    }`;
-
-  return (
-    <aside className="w-48 bg-white rounded-xl border border-zinc-200 p-3 flex flex-col shrink-0">
-      <p className="text-[10px] font-medium uppercase tracking-widest text-zinc-400 px-2.5 mb-1">
-        Navigation
-      </p>
-
-      <button className={cls("all")} onClick={() => setActiveFolder("all")}>
-        <AlignLeft size={14} /> Toutes les notes
-      </button>
-      <button className={cls("today")} onClick={() => setActiveFolder("today")}>
-        <Calendar size={14} /> Aujourd'hui
-      </button>
-
-      <hr className="my-2 border-zinc-100" />
-
-      <p className="text-[10px] font-medium uppercase tracking-widest text-zinc-400 px-2.5 mb-1">
-        Dossiers
-      </p>
-      {folders.map((f) => (
-        <button key={f} className={cls(f)} onClick={() => setActiveFolder(f)}>
-          <Folder size={14} /> {f}
-        </button>
-      ))}
-
-      <div className="flex-1" />
-      <hr className="my-2 border-zinc-100" />
-
+  const NavBtn = ({ id, icon: Icon, label, danger }) => {
+    const active = activeFolder === id;
+    return (
       <button
-        className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-sm text-red-500 hover:bg-red-50 w-full"
-        onClick={() => setActiveFolder("trash")}
+        onClick={() => setActiveFolder(id)}
+        className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] w-full text-left font-sans transition-all border-l-2
+          ${active
+            ? "bg-sky-pale text-blue font-medium border-blue-mid"
+            : danger
+              ? "text-red-400 hover:bg-red-50 border-transparent"
+              : "text-text-secondary hover:bg-sky-pale border-transparent"}`}
       >
-        <Trash2 size={14} /> Corbeille
-        {trashedNotes.length > 0 && (
-          <span className="ml-auto text-[10px] bg-red-100 rounded-full px-1.5">
+        <Icon size={14} className="shrink-0 opacity-70" />
+        <span className="flex-1 truncate">{label}</span>
+        {danger && trashedNotes.length > 0 && (
+          <span className="text-[10px] bg-red-100 text-red-400 rounded-full px-1.5 font-medium">
             {trashedNotes.length}
           </span>
         )}
       </button>
+    );
+  };
+
+  return (
+    <aside className="w-44 bg-white rounded-lg border border-border flex flex-col shrink-0 p-2.5 gap-0.5">
+      <p className="text-[9px] font-semibold uppercase tracking-[.1em] text-text-ghost px-2.5 py-1">
+        Navigation
+      </p>
+      <NavBtn id="all"   icon={AlignLeft} label="Toutes les notes" />
+      <NavBtn id="today" icon={Calendar}  label="Aujourd'hui" />
+
+      <div className="border-t border-border my-1.5" />
+
+      <p className="text-[9px] font-semibold uppercase tracking-[.1em] text-text-ghost px-2.5 py-1">
+        Dossiers
+      </p>
+      {folders.map((f) => <NavBtn key={f} id={f} icon={Folder} label={f} />)}
+
+      <div className="flex-1" />
+      <div className="border-t border-border my-1.5" />
+      <NavBtn id="trash" icon={Trash2} label="Corbeille" danger />
     </aside>
   );
 }

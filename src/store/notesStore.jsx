@@ -7,7 +7,14 @@ const INITIAL_NOTES = [
     content: "Commence à écrire tes notes ici...",
     folder: "Personnel",
     updatedAt: new Date(),
-  }
+  },
+  {
+    id: "2",
+    title: "Idées de projet",
+    content: "Liste des fonctionnalités à ajouter",
+    folder: "Travail",
+    updatedAt: new Date(Date.now() - 86400000),
+  },
 ];
 
 // ─── helpers localStorage ──────────────────────────────────────────────────
@@ -115,6 +122,12 @@ export function NotesProvider({ children }) {
     setActiveId((prev) => (trashedIds.includes(prev) ? null : prev));
   }, [trashedIds]);
 
+  const deleteNote = useCallback((id) => {
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+    setTrashedIds((prev) => prev.filter((tid) => tid !== id));
+    setActiveId((prev) => (prev === id ? null : prev));
+  }, []);
+
   return (
     <NotesCtx.Provider
       value={{
@@ -136,6 +149,7 @@ export function NotesProvider({ children }) {
         trashNote,
         restoreNote,
         emptyTrash,
+        deleteNote,
         floating,
         setFloating,
         closeNote,
